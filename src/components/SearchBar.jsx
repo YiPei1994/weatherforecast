@@ -12,7 +12,7 @@ function SearchBar() {
         value={city}
         onChange={(e) => setCity(e.target.value)}
         border="none"
-        placeholder="type city to search..."
+        placeholder="type city name to search..."
       />
       <Button onClick={() => handleSearch(city)} colorScheme="teal">
         Search

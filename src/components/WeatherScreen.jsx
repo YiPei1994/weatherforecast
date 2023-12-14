@@ -12,12 +12,12 @@ import {
   Flex,
   Stack,
   Switch,
+  Image,
 } from "@chakra-ui/react";
 
 function WeatherScreen() {
   const { weatherData, isLoading, toggleState, state } = useWeatherContext();
 
-  console.log(weatherData);
   if (isLoading) {
     // Return a loading indicator or message
     return <div>Loading...</div>;
@@ -34,32 +34,37 @@ function WeatherScreen() {
     main: { temp, temp_max, temp_min },
   } = weatherData;
 
-  const celsius = ((temp - 32) * 5) / 9;
-  const celsiusMin = ((temp_min - 32) * 5) / 9;
-  const celsiusMax = ((temp_max - 32) * 5) / 9;
+  const celsius = 280 - temp;
+  const celsiusMin = 280 - temp_min;
+  const celsiusMax = 280 - temp_max;
   return (
     <Card>
       <CardHeader>
         <Flex align="center" justifyContent="space-between">
           <Heading size="md"> {name} </Heading>
+
           <Stack align="center" direction="row">
-            <Text>Toggle {state ? "°C" : "°F"} </Text>
+            <Text>Toggle {state ? "°C" : "K"} </Text>
             <Switch size="sm" onChange={() => toggleState()} />
           </Stack>
         </Flex>
       </CardHeader>
       <CardBody>
-        <Flex alignItems="center">
-          <Box width="30%">
-            {weather[0].icon}
+        <Flex alignItems="center" justifyContent="space-around">
+          <Flex width="30%" justifyContent="space-around" align="center">
+            <Image
+              src={`https://openweathermap.org/img/wn/${weather[0].icon}.png`}
+            />
             <Text>{weather[0].main}</Text>
-          </Box>
+          </Flex>
           <Box width="60%">
-            <Text>Temp: {state ? celsius : temp} </Text>
+            <Text marginBottom="2rem">
+              Temp: {state ? `${Math.round(celsius)} °C` : `${temp} K`}{" "}
+            </Text>
             <Text>
               {" "}
-              max: {state ? celsiusMax : temp_max} - min:{" "}
-              {state ? celsiusMin : temp_min}
+              max: {state ? `${Math.round(celsiusMax)} °C` : `${temp_max} K`} -
+              min: {state ? `${Math.round(celsiusMin)} °C` : `${temp_min} K`}
             </Text>
           </Box>
         </Flex>
